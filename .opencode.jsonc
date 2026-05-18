@@ -1,0 +1,12 @@
+{
+  // Playwright MCP server for browser automation
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "playwright-mcp"
+      ],
+      "env": {}
+    }
+  }
+}

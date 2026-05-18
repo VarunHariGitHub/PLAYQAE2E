@@ -1,0 +1,24 @@
+{
+  "name": "playqae-e2e",
+  "version": "1.0.0",
+  "description": "Playwright E2E testing framework with Page Object Model",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "test:debug": "npx playwright test --debug",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "report": "npx playwright show-report",
+    "trace": "npx playwright show-trace",
+    "codegen": "npx playwright codegen"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@playwright/mcp": "^0.0.75"
+  }
+}
