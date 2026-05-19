@@ -5,12 +5,12 @@ test('Open Google, search hello, validate first result', async ({ page }) => {
 
   await page.waitForSelector('textarea[name="q"]', { timeout: 15000 });
   const searchBox = page.locator('textarea[name="q"]');
-  await searchBox.fill('hello');
-  await searchBox.press('Enter');
+  await searchBox.fill('hellotest');
+  await searchBox.click('Enter');
+
 
   await page.waitForSelector('#search', { timeout: 15000 });
-
-  const firstResult = page.locator('#search a').first();
+    const firstResult = page.locator('#search a').first();
   await expect(firstResult).toBeVisible({ timeout: 10000 });
 
   const href = await firstResult.getAttribute('href');
