@@ -40,6 +40,15 @@ export default defineConfig({
       name: 'mobile-safari',
       use: { ...devices['iPhone 13'] },
     },
+    {
+      name: 'iPhone Chrome',
+      use: {
+        ...devices['iPhone 15 Pro Max'],
+        browserName: 'chromium',
+        headless: false,
+        launchOptions: { headless: false },
+      },
+    },
   ],
   webServer: process.env.CI ? {
     command: 'npm run dev',
