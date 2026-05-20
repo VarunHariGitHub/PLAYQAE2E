@@ -5,7 +5,7 @@ test('Open Google, search hello, validate first result', async ({ page }) => {
 
   await page.waitForSelector('textarea[name="q"]', { timeout: 15000 });
   const searchBox = page.locator('textarea[name="q"]');
-  await searchBox.fill('hellotest');
+  await searchBox.fill('hellotest1');
   await searchBox.click('Enter');
 
 
