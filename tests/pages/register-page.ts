@@ -11,7 +11,7 @@ export class RegisterPage {
     this.page = page;
     this.emailInput = page.locator('#register-email');
     this.passwordInput = page.locator('#register-password');
-    this.confirmPasswordInput = page.locator('input[placeholder="Repeat your password"]');
+    this.confirmPasswordInput = page.locator('input[type="password"]').nth(1);
     this.createAccountButton = page.locator('#register-btn');
   }
 
@@ -28,6 +28,9 @@ export class RegisterPage {
   async expectPageOpened(): Promise<void> {
     await expect(this.page).toHaveURL(/\/register/);
     await expect(this.emailInput).toBeVisible();
+    await expect(this.passwordInput).toBeVisible();
+    await expect(this.confirmPasswordInput).toBeVisible();
+    await expect(this.createAccountButton).toBeVisible();
   }
 
   async register(email: string, password: string): Promise<void> {
