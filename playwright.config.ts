@@ -12,7 +12,7 @@ export default defineConfig({
     process.env.CI ? ['github'] : ['list'],
   ],
   use: {
-    baseURL: process.env.BASE_URL || 'https://www.google.com',
+    baseURL: process.env.BASE_URL || 'https://eventhub.rahulshettyacademy.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
