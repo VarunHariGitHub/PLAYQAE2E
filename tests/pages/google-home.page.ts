@@ -12,7 +12,7 @@ export class GoogleHomePage {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto('/', { waitUntil: 'domcontentloaded' });
+    await this.page.goto('https://www.google.com', { waitUntil: 'domcontentloaded' });
     await this.page.waitForLoadState('networkidle');
   }
 

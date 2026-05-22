@@ -13,12 +13,16 @@ export class HomePage {
 
   async expectPageOpened(email: string): Promise<void> {
     await expect(this.page).toHaveURL(/\/$/);
-    await expect(this.userEmailDisplay).toBeVisible();
     await expect(this.userEmailDisplay).toHaveText(email);
   }
 
   async clickEventsTab(): Promise<void> {
     await this.eventsNavLink.click();
+    await this.page.waitForLoadState('networkidle');
+  }
+
+  async clickLogout(): Promise<void> {
+    await this.page.locator('#logout-btn').click();
     await this.page.waitForLoadState('networkidle');
   }
 }

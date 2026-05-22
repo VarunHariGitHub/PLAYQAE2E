@@ -16,9 +16,12 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1",
+    "@types/xlsx": "^0.0.36",
     "typescript": "^5.7.0"
   },
   "dependencies": {
-    "@playwright/mcp": "^0.0.75"
+    "@playwright/mcp": "^0.0.75",
+    "xlsx": "^0.18.5"
   }
 }

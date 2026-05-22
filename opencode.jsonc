@@ -1,0 +1,78 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    // Playwright MCP server for browser automation
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "playwright-mcp"],
+      "enabled": true
+    },
+    // Google Workspace — set GOOGLE_MCP_CLIENT_ID and GOOGLE_MCP_CLIENT_SECRET env vars
+    "google-gmail": {
+      "type": "remote",
+      "url": "https://gmailmcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_MCP_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
+        "scope": "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.compose"
+      }
+    },
+    "google-drive": {
+      "type": "remote",
+      "url": "https://drivemcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_MCP_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
+        "scope": "https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file"
+      }
+    },
+    "google-calendar": {
+      "type": "remote",
+      "url": "https://calendarmcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_MCP_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
+        "scope": "https://www.googleapis.com/auth/calendar.calendarlist.readonly https://www.googleapis.com/auth/calendar.events.freebusy https://www.googleapis.com/auth/calendar.events.readonly"
+      }
+    },
+    "google-people": {
+      "type": "remote",
+      "url": "https://people.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_MCP_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
+        "scope": "https://www.googleapis.com/auth/directory.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts.readonly"
+      }
+    },
+    // Gmail MCP via Smithery/Composio — authenticate with: opencode mcp auth gmail
+    "gmail": {
+      "type": "remote",
+      "url": "https://smithery-composio.smithery.workers.dev/gmail/mcp",
+      "headers": {}
+    },
+    // Excel MCP server for programmatic Excel operations
+    "excel": {
+      "type": "local",
+      "command": ["uvx", "excel-mcp-server", "stdio"],
+      "enabled": true
+    },
+    "google-chat": {
+      "type": "remote",
+      "url": "https://chatmcp.googleapis.com/mcp/v1",
+      "oauth": {
+        "clientId": "{env:GOOGLE_MCP_CLIENT_ID}",
+        "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
+        "scope": "https://www.googleapis.com/auth/chat.spaces.readonly https://www.googleapis.com/auth/chat.memberships.readonly https://www.googleapis.com/auth/chat.messages.readonly https://www.googleapis.com/auth/chat.messages.create https://www.googleapis.com/auth/chat.users.readstate.readonly"
+      }
+    },
+    // GitHub MCP server for repository operations
+    "github": {
+      "type": "local",
+      "command": ["github-mcp-server-mcp"],
+      "env": {
+        "GITHUB_TOKEN": "{env:GITHUB_TOKEN}"
+      },
+      "enabled": true
+    }
+  }
+}
