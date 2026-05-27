@@ -6,6 +6,19 @@ on:
   pull_request:
     branches: [master]
   workflow_dispatch:
+    inputs:
+      test_file:
+        description: 'Specific test file to run (e.g. tests/e2e/google-search.spec.js)'
+        required: false
+        default: ''
+      headed:
+        description: 'Run in headed mode (requires display)'
+        type: boolean
+        default: false
+      project:
+        description: 'Project to run (chromium, mobile-chrome, mobile-safari)'
+        required: false
+        default: 'chromium'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [chromium, mobile-chrome, mobile-safari]
+        project: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.project)) || fromJSON('["chromium", "mobile-chrome", "mobile-safari"]') }}
     name: ${{ matrix.project }}
 
     steps:
@@ -38,8 +51,17 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Install xvfb (headed mode support)
+        if: ${{ github.event.inputs.headed == 'true' }}
+        run: sudo apt-get install -y xvfb
+
       - name: Run Playwright tests (${{ matrix.project }})
-        run: npx playwright test --project=${{ matrix.project }}
+        run: >
+          ${{ github.event.inputs.headed == 'true' && 'xvfb-run --auto-servernum' || '' }}
+          npx playwright test
+          --project=${{ matrix.project }}
+          ${{ github.event.inputs.headed == 'true' && '--headed' || '' }}
+          ${{ github.event.inputs.test_file || '' }}
         env:
           BASE_URL: https://eventhub.rahulshettyacademy.com
 
