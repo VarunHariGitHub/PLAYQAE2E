@@ -1,6 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { AutomationPracticePage } from '../pages/automation-practice-page';
 
+test.use({
+  launchOptions: {
+    args: ['--disable-popup-blocking'],
+  },
+});
+
 test.describe('Automation Practice Page - All Sections', () => {
   test.setTimeout(120_000);
 
@@ -10,6 +16,7 @@ test.describe('Automation Practice Page - All Sections', () => {
     practicePage = new AutomationPracticePage(page);
     await practicePage.goto();
     await practicePage.expectPageOpened();
+    
   });
 
   // ---------------------------------------------------------------

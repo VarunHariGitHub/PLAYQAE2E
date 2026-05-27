@@ -51,9 +51,10 @@
       "headers": {}
     },
     // Excel MCP server for programmatic Excel operations
+    // Install with: uv tool install excel-mcp-server
     "excel": {
       "type": "local",
-      "command": ["uvx", "excel-mcp-server", "stdio"],
+      "command": ["excel-mcp-server", "stdio"],
       "enabled": true
     },
     "google-chat": {
@@ -64,6 +65,19 @@
         "clientSecret": "{env:GOOGLE_MCP_CLIENT_SECRET}",
         "scope": "https://www.googleapis.com/auth/chat.spaces.readonly https://www.googleapis.com/auth/chat.memberships.readonly https://www.googleapis.com/auth/chat.messages.readonly https://www.googleapis.com/auth/chat.messages.create https://www.googleapis.com/auth/chat.users.readstate.readonly"
       }
+    },
+    // Jira MCP server for issue/project management — set env vars:
+    // JIRA_INSTANCE_URL (e.g. https://your-site.atlassian.net)
+    // JIRA_USER_EMAIL, JIRA_API_KEY (from https://id.atlassian.com/manage-profile/security/api-tokens)
+    "jira": {
+      "type": "local",
+      "command": ["npx", "-y", "jira-mcp"],
+      "env": {
+        "JIRA_INSTANCE_URL": "{env:JIRA_INSTANCE_URL}",
+        "JIRA_USER_EMAIL": "{env:JIRA_USER_EMAIL}",
+        "JIRA_API_KEY": "{env:JIRA_API_KEY}"
+      },
+      "enabled": true
     },
     // GitHub MCP server for repository operations
     "github": {

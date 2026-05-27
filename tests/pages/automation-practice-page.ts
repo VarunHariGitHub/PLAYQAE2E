@@ -94,8 +94,7 @@ export class AutomationPracticePage {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto('/AutomationPractice/', { waitUntil: 'domcontentloaded' });
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto('https://rahulshettyacademy.com/AutomationPractice/', { waitUntil: 'domcontentloaded' });
   }
 
   async expectPageOpened(): Promise<void> {
@@ -119,11 +118,13 @@ export class AutomationPracticePage {
   // ---------- Suggestion Class Example ----------
 
   async typeSuggestion(text: string): Promise<void> {
-    await this.suggestionInput.fill(text);
+    await this.suggestionInput.pressSequentially(text, { delay: 100 });
+    await this.page.locator('.ui-autocomplete').waitFor({ state: 'visible', timeout: 5000 });
   }
 
   async selectSuggestion(suggestionText: string): Promise<void> {
-    await this.page.locator('.ui-menu-item-wrapper', { hasText: suggestionText }).click();
+    await this.page.getByText(suggestionText, { exact: true }).waitFor({ state: 'visible', timeout: 5000 });
+    await this.page.getByText(suggestionText, { exact: true }).click();
   }
 
   async expectSuggestionInputValue(value: string): Promise<void> {
@@ -176,7 +177,7 @@ export class AutomationPracticePage {
       this.openWindowButton.click(),
     ]);
     await newWindow.waitForLoadState('domcontentloaded');
-    await newWindow.waitForLoadState('networkidle');
+    await expect(newWindow).toHaveURL(/qaclickacademy/);
     return newWindow;
   }
 
@@ -188,7 +189,7 @@ export class AutomationPracticePage {
       this.openTabLink.click(),
     ]);
     await newTab.waitForLoadState('domcontentloaded');
-    await newTab.waitForLoadState('networkidle');
+    await expect(newTab).toHaveURL(/qaclickacademy/);
     return newTab;
   }
 
@@ -196,35 +197,45 @@ export class AutomationPracticePage {
 
   async triggerAlert(text: string): Promise<string> {
     await this.alertNameInput.fill(text);
-    const [dialog] = await Promise.all([
-      this.page.waitForEvent('dialog'),
-      this.alertButton.click(),
-    ]);
-    const message = dialog.message();
-    await dialog.accept();
-    return message;
+    const dialogPromise = new Promise<{ message: string; accept: () => void }>((resolve) => {
+      this.page.once('dialog', (dialog) => {
+        resolve({ message: dialog.message(), accept: () => dialog.accept() });
+      });
+    });
+    await this.page.evaluate(() => {
+      setTimeout(() => (document.getElementById('alertbtn') as HTMLElement)?.click(), 50);
+    });
+    const result = await dialogPromise;
+    result.accept();
+    return result.message;
   }
 
   async triggerConfirm(text: string, accept: boolean = true): Promise<string> {
     await this.alertNameInput.fill(text);
-    const [dialog] = await Promise.all([
-      this.page.waitForEvent('dialog'),
-      this.confirmButton.click(),
-    ]);
-    const message = dialog.message();
-    if (accept) {
-      await dialog.accept();
-    } else {
-      await dialog.dismiss();
-    }
-    return message;
+    const dialogPromise = new Promise<{ message: string }>((resolve) => {
+      this.page.once('dialog', (dialog) => {
+        const message = dialog.message();
+        if (accept) {
+          dialog.accept();
+        } else {
+          dialog.dismiss();
+        }
+        resolve({ message });
+      });
+    });
+    await this.page.evaluate(() => {
+      setTimeout(() => (document.getElementById('confirmbtn') as HTMLElement)?.click(), 50);
+    });
+    const result = await dialogPromise;
+    return result.message;
   }
 
   // ---------- Web Table Example ----------
 
   async getWebTableData(): Promise<string[][]> {
     return this.page.evaluate(() => {
-      const table = document.querySelector('table#product');
+      const tables = document.querySelectorAll('table#product');
+      const table = tables[0];
       if (!table) return [];
       const rows = Array.from(table.querySelectorAll('tbody tr'));
       return rows.map((row) =>
@@ -325,6 +336,7 @@ export class AutomationPracticePage {
 
   async getIframeLinks(): Promise<string[]> {
     const iframe = this.page.frameLocator('#courses-iframe');
+    await iframe.locator('a').first().waitFor({ state: 'attached', timeout: 15000 });
     return iframe.locator('a').allTextContents();
   }
 

@@ -12,7 +12,7 @@ permission:
   websearch: deny
 ---
 
-You are a Test Executor. Run Playwright tests and report results clearly.
+You are a Test Executor. Run Playwright tests in headed mode and report results clearly.
 
 ## Commands
 
