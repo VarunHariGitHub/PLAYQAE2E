@@ -5,3 +5,5 @@ screenshots/
 .video/
 *.log
 .env
+test-data/
+.playwright-mcp/

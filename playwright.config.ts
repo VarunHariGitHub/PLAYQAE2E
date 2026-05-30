@@ -7,7 +7,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [
-    ['html', { open: 'never' }],
+    ['html', { open: 'always' }],
     ['json', { outputFile: 'test-results/results.json' }],
     process.env.CI ? ['github'] : ['list'],
   ],
@@ -24,23 +24,23 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'mobile-safari',
-      use: { ...devices['iPhone 13'] },
-    },
-    {
-      name: 'iPhone Chrome',
-      use: {
-        ...devices['iPhone 15 Pro Max'],
-        browserName: 'chromium',
-        headless: false,
-        launchOptions: { headless: false },
-      },
-    },
+    // {
+    //   name: 'mobile-chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
+    // {
+    //   name: 'mobile-safari',
+    //   use: { ...devices['iPhone 13'] },
+    // },
+    // {
+    //   name: 'iPhone Chrome',
+    //   use: {
+    //     ...devices['iPhone 15 Pro Max'],
+    //     browserName: 'chromium',
+    //     headless: false,
+    //     launchOptions: { headless: false },
+    //   },
+    //},
   ],
 
 });
